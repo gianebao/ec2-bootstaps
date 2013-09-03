@@ -66,8 +66,13 @@ install_nginx()
     # Install NginX and bind pagespeed
     tar -xvzf `get_file $NX_SRC`
     cd nginx-${NX_VER}/
-    ./configure --add-module=$WORKING_FOLDER/$PS_HOME
     
+    # Configure NginX
+    ./configure --add-module=$WORKING_FOLDER/$PS_HOME \
+        --sbin-path=/usr/sbin \
+        --conf-path=/etc/nginx
+    
+    # Fire it up!
     make
     sudo make install
 }
