@@ -26,7 +26,7 @@ get_file()
 # $1  source URL
 {
     local SRC="$1"
-    local BASE=${a##*/}
+    local BASE=${SRC##*/}
     
     if [ ! -f $BASE ]; then
         wget $SRC
@@ -53,16 +53,16 @@ install_nginx()
     cd $WORKING_FOLDER
     
     # Download ngx_pagespeed
-    unzip -n $(get_file $PS_SRC)
+    unzip -n `get_file $PS_SRC`
     cd $PS_HOME/
     
     # Download pagespeed from Google
-    tar -xzvf $(get_file $PS_GOOG_SRC)
+    tar -xzvf `get_file $PS_GOOG_SRC`
     
     cd $WORKING_FOLDER
     
     # Install NginX and bind pagespeed
-    tar -xvzf $(get_file $NX_SRC)
+    tar -xvzf `get_file $NX_SRC`
     cd nginx-${NX_VER}/
     ./configure --add-module=$WORKING_FOLDER/$PS_HOME
     
@@ -74,4 +74,7 @@ install_nginx()
 # =======================================
 # Bootstrap
 # =======================================
+
+CURRENT_DIR=$(pwd)
 main > ~/nginx-php-centos-out.log 2> ~/nginx-php-centos-errors.log
+cd $CURRENT_DIR
