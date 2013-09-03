@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # =======================================
 main() # Main logic
 # =======================================
@@ -45,7 +47,7 @@ install_nginx()
     local NX_VER="1.4.2"
     
     local PS_SRC=https://github.com/pagespeed/ngx_pagespeed/archive/${PS_VER}.zip
-    local PS_HOME=ngx_${PS_VER}
+    local PS_HOME=ngxps_${PS_VER}
     local PS_GOOG_SRC=https://dl.google.com/dl/page-speed/psol/${PS_GOOG_VER}.tar.gz
     local NX_SRC=http://nginx.org/download/nginx-${NX_VER}.tar.gz
     local WORKING_FOLDER=/tmp
@@ -53,7 +55,7 @@ install_nginx()
     cd $WORKING_FOLDER
     
     # Download ngx_pagespeed
-    unzip -n `get_file $PS_SRC`
+    unzip -n `get_file $PS_SRC` -d $PS_HOME
     cd $PS_HOME/
     
     # Download pagespeed from Google
