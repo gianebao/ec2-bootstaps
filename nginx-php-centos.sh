@@ -47,7 +47,7 @@ install_nginx()
     local NX_VER="1.4.2"
     
     local PS_SRC=https://github.com/pagespeed/ngx_pagespeed/archive/${PS_VER}.zip
-    local PS_HOME=ngx_pagespeed-{PS_VER}
+    local PS_HOME=ngx_pagespeed-${PS_VER}
     local PS_GOOG_SRC=https://dl.google.com/dl/page-speed/psol/${PS_GOOG_VER}.tar.gz
     local NX_SRC=http://nginx.org/download/nginx-${NX_VER}.tar.gz
     local WORKING_FOLDER=/tmp
