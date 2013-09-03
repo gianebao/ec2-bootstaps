@@ -25,11 +25,14 @@ get_file()
 # =======================================
 # $1  source URL
 {
-    local src="$1"
+    local SRC="$1"
+    local BASE=${a##*/}
     
-    if [ ! -f ${PS_VER}.zip ]; then
-        wget $PS_SRC
+    if [ ! -f $BASE ]; then
+        wget $SRC
     fi
+    
+    echo $BASE
 }
 
 # =======================================
@@ -38,34 +41,31 @@ install_nginx()
 {
     # Install pagespeed and
     local PS_VER=release-1.6.29.5-beta
+    local PS_GOOG_VER="1.6.29.5"
+    local NX_VER="1.4.2"
+    
     local PS_SRC=https://github.com/pagespeed/ngx_pagespeed/archive/${PS_VER}.zip
     local PS_HOME=ngx_${PS_VER}
-    local PS_GOOG_VER="1.6.29.5"
     local PS_GOOG_SRC=https://dl.google.com/dl/page-speed/psol/${PS_GOOG_VER}.tar.gz
-    local NX_VER="1.4.2"
     local NX_SRC=http://nginx.org/download/nginx-${NX_VER}.tar.gz
     local WORKING_FOLDER=/tmp
     
+    cd $WORKING_FOLDER
+    
     # Download ngx_pagespeed
-    cd ${WORKING_FOLDER}
-    
-    if [ ! -f ${PS_VER}.zip ]; then
-        wget $PS_SRC
-    fi
-    
-    unzip -n ${PS_VER}.zip
-    cd ${PS_HOME}/
+    unzip -n $(get_file $PS_SRC)
+    cd $PS_HOME/
     
     # Download pagespeed from Google
-    wget $PS_GOOG_SRC
-    tar -xzvf ${PS_GOOG_VER}.tar.gz
+    tar -xzvf $(get_file $PS_GOOG_SRC)
+    
+    cd $WORKING_FOLDER
     
     # Install NginX and bind pagespeed
-    cd ${WORKING_FOLDER}
-    wget ${NX_SRC}
-    tar -xvzf nginx-${NX_VER}.tar.gz
-    cd nginx-1.4.2/
+    tar -xvzf $(get_file $NX_SRC)
+    cd nginx-${NX_VER}/
     ./configure --add-module=$WORKING_FOLDER/$PS_HOME
+    
     make
     sudo make install
 }
