@@ -1,5 +1,22 @@
 #!/bin/bash
-# @Disclaimer  This is an open-source and WILL NOT PROVIDE ANY WARANTY OR GUARANTEE
+# @Disclaimer  This is an open-source product. THE OWNER WILL NOT PROVIDE ANY WARANTY OR GUARANTEE
+# This script will setup a [Linux Centos] OS with:
+#   - NginX with modules:
+#       HTTP SSL
+#       Google Pagespeed
+#   - Git
+#   - PHP-FPM
+#   - PHP with modules: [To add more modules, execute it separately]
+#      apc
+#      gd
+#      xml
+#      curl
+#      json
+#      pear
+#      c++
+#      imap
+#      mcrypt
+
 
 set -e
 
@@ -9,11 +26,26 @@ TMPFLDR=/tmp
 main() # Main logic
 # =======================================
 {
-    local PS_VER="1.6.29.5"
-    local NX_VER="1.5.4"
+    
+    local PS_VER="1.6.29.5" # Google Pagespeed version
+    local NX_VER="1.5.4"    # NginX version
     
     prepare
     install_nginx -n $NX_VER -p $PS_VER
+    
+    sudo yum install --assumeyes /
+        git /
+        php54 /
+        php54-fpm /
+        php54-apc /
+        php54-curl /
+        php54-gd /
+        php54-imap /
+        php54-json /
+        php54-mcrypt/ 
+        php-pear /
+        php54-xml
+    
     cleanup
 }
 
