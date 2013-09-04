@@ -71,16 +71,17 @@ install_nginx() # Install NginX
     
     local PS_PATH=`get_pagespeed $PS_VER`
     
-    cd `get_nginx $NX_VER`
+    echo $PS_PATH
+    # cd `get_nginx $NX_VER`
     # Configure NginX
-    ./configure --add-module=$PS_PATH \
+    # ./configure --add-module=$PS_PATH \
         --with-http_ssl_module \
         --sbin-path=/usr/sbin \
         --conf-path=/etc/nginx/nginx.conf
     
     # Fire it up!
-    make
-    sudo make install
+    # make
+    # sudo make install
 }
 
 # =======================================
@@ -116,11 +117,11 @@ get_pagespeed() # Get pagespeed binaries
     cd $WORKING_FOLDER
     
     # Download ngx_pagespeed
-    unzip -n `get_file $PS_SRC`
-    cd $PS_HOME/
+    unzip -n -qq `get_file $PS_SRC`
+    cd $PS_HOME
     
     # Download pagespeed from Google
-    tar -xzvf `get_file $PS_GOOG_SRC`
+    tar -xzf `get_file $PS_GOOG_SRC`
     
     echo $WORKING_FOLDER/$PS_HOME
 }
@@ -138,7 +139,7 @@ get_nginx() # Get nginx binaries
     cd $WORKING_FOLDER
     
     # Install NginX and bind pagespeed
-    tar -xvzf `get_file $NX_SRC`
+    tar -xzf `get_file $NX_SRC`
     
     echo $WORKING_FOLDER/nginx-${NX_VER}
 }
