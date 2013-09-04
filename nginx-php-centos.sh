@@ -77,9 +77,14 @@ install_nginx() # Install NginX
 # -n  NginX version
 # -p  Pagespeed version
 {
+     # these are fallback values! Change in main()
     local PS_VER="1.6.29.5"
     local NX_VER="1.5.4"
-
+    local USERNAME="www"
+    local GROUP="www"
+    local FOLDERTMP=/tmp/nginx
+    local FOLDERLOG=/var/log/nginx
+    
     while getopts ":n:p:" option; do
         case $option in
             p)
@@ -101,19 +106,30 @@ install_nginx() # Install NginX
         esac
     done
     
+    sudo yum install --assumeyes openssl
+    
     local PS_PATH=`get_pagespeed $PS_VER`
     
-    echo $PS_PATH
-    # cd `get_nginx $NX_VER`
+    cd `get_nginx $NX_VER`
     # Configure NginX
-    # ./configure --add-module=$PS_PATH \
+    ./configure --add-module=$PS_PATH \
+        --prefix=/usr \
         --with-http_ssl_module \
         --sbin-path=/usr/sbin \
-        --conf-path=/etc/nginx/nginx.conf
+        --conf-path=/etc/nginx/nginx.conf \
+        --http-log-path=$FOLDERLOG/access.log \
+        --error-log-path=$FOLDERLOG/error.log \
+        --http-client-body-temp-path=$FOLDERTMP/client \
+        --http-proxy-temp-path=$FOLDERTMP/proxy \
+        --http-fastcgi-temp-path=$FOLDERTMP/fastcgi \
+        --user=${USERNAME} \
+        --group=${GROUP}
+    
+    id ${USERNAME} >/dev/null 2>&1 || adduser --system --no-create-home --user-group ${USERNAME}
     
     # Fire it up!
-    # make
-    # sudo make install
+    make
+    sudo make install
 }
 
 # =======================================
