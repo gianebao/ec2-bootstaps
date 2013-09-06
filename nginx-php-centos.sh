@@ -17,7 +17,6 @@
 #      imap
 #      mcrypt
 
-
 set -e
 
 TMPFLDR=/tmp
@@ -29,9 +28,11 @@ main() # Main logic
     
     local PS_VER="1.6.29.5" # Google Pagespeed version
     local NX_VER="1.5.4"    # NginX version
+    local USERNAME="www"    # Web user name
+    local GROUP="www"       # Web user group
     
     prepare
-    install_nginx -n $NX_VER -p $PS_VER
+    install_nginx -n $NX_VER -p $PS_VER -u USERNAME -g GROUP
     
     sudo yum install --assumeyes /
         git /
@@ -85,15 +86,23 @@ install_nginx() # Install NginX
     local FOLDERTMP=/tmp/nginx
     local FOLDERLOG=/var/log/nginx
     
-    while getopts ":n:p:" option; do
+    while getopts ":n:p:u:g:" option; do
         case $option in
+            n)
+                #NginX version
+                NX_VER="$OPTARG"
+            ;;
             p)
                 # Pagespeed version
                 PS_VER="$OPTARG"
             ;;
-            n)
-                #NginX version
-                NX_VER="$OPTARG"
+            u)
+                # Web user
+                USERNAME="$OPTARG"
+            ;;
+            g)
+                # Web user group
+                GROUP="$OPTARG"
             ;;
             :)
                 echo "Error: -$OPTARG requires an argument"
