@@ -34,17 +34,17 @@ main() # Main logic
     prepare
     install_nginx -n $NX_VER -p $PS_VER -u USERNAME -g GROUP
     
-    sudo yum install --assumeyes /
-        git /
-        php54 /
-        php54-fpm /
-        php54-apc /
-        php54-curl /
-        php54-gd /
-        php54-imap /
-        php54-json /
-        php54-mcrypt/ 
-        php-pear /
+    sudo yum install --assumeyes \
+        git \
+        php54 \
+        php54-fpm \
+        php54-apc \
+        php54-curl \
+        php54-gd \
+        php54-imap \
+        php54-json \
+        php54-mcrypt \
+        php-pear \
         php54-xml
     
     cleanup
@@ -115,7 +115,7 @@ install_nginx() # Install NginX
         esac
     done
     
-    sudo yum install --assumeyes openssl
+    sudo yum install --assumeyes openssl openssl-devel
     
     local PS_PATH=`get_pagespeed $PS_VER`
     
