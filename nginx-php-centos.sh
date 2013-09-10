@@ -25,14 +25,15 @@ TMPFLDR=/tmp
 main() # Main logic
 # =======================================
 {
-    
-    local PS_VER="1.6.29.5" # Google Pagespeed version
     local NX_VER="1.5.4"    # NginX version
+    # NginX Modules:
+        local PS_VER="1.6.29.5" # Google Pagespeed version
+    
     local USERNAME="www"    # Web user name
     local GROUP="www"       # Web user group
     
     prepare
-    install_nginx -n $NX_VER -p $PS_VER -u USERNAME -g GROUP
+    install_nginx -n $NX_VER -p $PS_VER -u $USERNAME -g $GROUP
     
     sudo yum install --assumeyes \
         git \
@@ -131,10 +132,10 @@ install_nginx() # Install NginX
         --http-client-body-temp-path=$FOLDERTMP/client \
         --http-proxy-temp-path=$FOLDERTMP/proxy \
         --http-fastcgi-temp-path=$FOLDERTMP/fastcgi \
-        --user=${USERNAME} \
-        --group=${GROUP}
+        --user=$USERNAME \
+        --group=$GROUP
     
-    id ${USERNAME} >/dev/null 2>&1 || adduser --system --no-create-home --user-group ${USERNAME}
+    id $USERNAME >/dev/null 2>&1 || adduser --system --no-create-home --user-group $USERNAME
     
     # Fire it up!
     make
